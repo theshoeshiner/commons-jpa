@@ -9,6 +9,10 @@ public class SessionFactorySessionManager implements SessionManager {
 	protected SessionFactory sessionFactory;
 	protected boolean readOnly = false;
 	
+	public SessionFactorySessionManager(){
+		
+	}
+	
 	public SessionFactorySessionManager(SessionFactory sf){
 		this.sessionFactory = sf;
 	}
@@ -33,7 +37,7 @@ public class SessionFactorySessionManager implements SessionManager {
         return currentSession;
     }
 	
-	public void closeCurrentSession() {
+	public void closeCurrentSession(){
 		Session currentSession = getSessionFactory().getCurrentSession();	     
 		if (currentSession.isOpen()) {
 			currentSession.close();
