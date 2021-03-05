@@ -9,14 +9,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BlobStreamType implements UserType  {
-
+	
 	protected static final Logger LOGGER = LoggerFactory.getLogger(BlobStreamType.class);
 	
 	public Class<?> returnedClass() {

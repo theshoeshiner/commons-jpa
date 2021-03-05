@@ -1,2 +1,2 @@
-# commons-hibernate
-Common utilities for the hibernate framework
+# commons-jpa
+Common classes for JPA
