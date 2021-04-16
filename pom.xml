@@ -152,4 +152,6 @@
 		</plugins>
 	</build>
 	<url>https://github.com/theshoeshiner/commons-jpa</url>
+	<name>Commons JPA</name>
+	<description>Common classes to extend the JPA API</description>
 </project>
