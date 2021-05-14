@@ -1,7 +1,5 @@
 package javax.persistence;
 
-import java.math.BigDecimal;
-
 public abstract class NumberToStringConverter<T extends Number> implements AttributeConverter<T, String> {
 
 	@Override
