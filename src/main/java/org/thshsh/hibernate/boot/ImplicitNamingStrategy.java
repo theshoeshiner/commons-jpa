@@ -20,16 +20,17 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 		super();
 	}
 	
-	 
 	@Override
 	public Identifier determineIndexName(ImplicitIndexNameSource source) {
 		String name = source.getTableName().getText()+"_"+String.join("_", source.getColumnNames().stream().map(Identifier::getText).collect(Collectors.toList()));
+		LOGGER.debug("determineIndexName: {}",name);
 		return Identifier.toIdentifier(name);
 	}
 
 	@Override
 	public Identifier determineUniqueKeyName(ImplicitUniqueKeyNameSource source) {
-		String name = "unique_"+String.join("_", source.getColumnNames().stream().map(Identifier::getText).collect(Collectors.toList()));
+		String name = "uk_"+source.getTableName().getText()+"_"+String.join("_", source.getColumnNames().stream().map(Identifier::getText).collect(Collectors.toList()));
+		LOGGER.debug("determineUniqueKeyName: {}",name);
 		return Identifier.toIdentifier(name);
 	}
 
@@ -37,12 +38,10 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	
 	@Override
 	public Identifier determineForeignKeyName(ImplicitForeignKeyNameSource source) {
-		if(source.getColumnNames().size()>1) {
-			throw new IllegalArgumentException("Cannot handle mulitple column keys");
-		} 
-		String name = source.getTableName().getText()+"_"+source.getReferencedTableName().getText();
-		LOGGER.debug("determineForeignKeyName: {} + {} = {}",new Object[] {source.getTableName().getText(),source.getReferencedTableName().getText(),name});
-		return Identifier.toIdentifier(name); 
+		String columns = String.join("_", source.getColumnNames().stream().map(Identifier::getText).collect(Collectors.toList()));
+		String name = "fk_"+source.getTableName().getText()+"_"+source.getReferencedTableName().getText()+"_"+columns;
+		LOGGER.debug("determineForeignKeyName: {}",name);
+		return Identifier.toIdentifier(name);   
 	}
 	
 	
