@@ -17,10 +17,10 @@ public abstract class DataSourceConfiguration {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfiguration.class);
 
-    protected DatasourceProperties props;
+    protected DataSourceProperties props;
     protected EnableJpaRepositories jpaAnnotation;
 	
-	public DataSourceConfiguration(DatasourceProperties props) {
+	public DataSourceConfiguration(DataSourceProperties props) {
 		this.props = props;
 		jpaAnnotation = this.getClass().getAnnotation(EnableJpaRepositories.class);
 	}

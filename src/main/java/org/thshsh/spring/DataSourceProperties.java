@@ -3,7 +3,7 @@ package org.thshsh.spring;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DatasourceProperties {
+public class DataSourceProperties {
 
     private Map<String, String> props = new HashMap<>();
     
