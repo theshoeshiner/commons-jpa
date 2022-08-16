@@ -26,9 +26,9 @@ import org.slf4j.LoggerFactory;
  * Allows calling a sequence to populate a non ID column
  * Must be configured on the column via:
  * 
- * @GeneratorType(type = SequenceIntegrator.class, when = GenerationTime.INSERT)
- * @SequenceGenerator(name = "internal_id",schema = "box",sequenceName = "event_seq",allocationSize = 50,initialValue = 1)
- * @ColumnSequence(name="internal_id")
+ * &#064;GeneratorType(type = SequenceIntegrator.class, when = GenerationTime.INSERT)
+ * &#064;SequenceGenerator(name = "internal_id",schema = "box",sequenceName = "event_seq",allocationSize = 50,initialValue = 1)
+ * &#064;ColumnSequence(name="internal_id")
  * 
  * This FQ class name must also be added to: /META-INF/services/org.hibernate.integrator.spi.Integrator
  * 
