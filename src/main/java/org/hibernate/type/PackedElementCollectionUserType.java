@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -17,37 +18,31 @@ import org.hibernate.usertype.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Custom type that converts a numeric database column into a java Duration , optionally allowing
- * the user to specfiy the ChronoUnit to be used
- *
- */
-public class ScalabeDurationUserType implements UserType,ParameterizedType {
+public class PackedElementCollectionUserType implements UserType,ParameterizedType {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger( ScalabeDurationUserType.class );
 	
-	public static final String TYPE = "org.hibernate.type.ScalabeDurationUserType";
+	public static final String TYPE = "org.hibernate.type.PackedElementCollectionUserType";
 	
-	public static final ScalabeDurationUserType INSTANCE = new ScalabeDurationUserType();
+	public static final PackedElementCollectionUserType INSTANCE = new PackedElementCollectionUserType();
 	
 	
 
-    protected ScalableDurationJavaDescriptor descriptor = new ScalableDurationJavaDescriptor();
+    protected PackedElementCollectionJavaDescriptor descriptor = new PackedElementCollectionJavaDescriptor();
     
     
-    public ScalabeDurationUserType() {
+    public PackedElementCollectionUserType() {
     	super();
-    	LOGGER.debug("ScalabeDurationUserType()");
     }
     
     @Override
     public int[] sqlTypes() {
-        return new int[] {Types.BIGINT};
+        return new int[] {Types.VARCHAR};
     }
 
     @Override
     public Class<?> returnedClass() {
-        return Duration.class;
+        return List.class;
     }
 
     @Override
@@ -66,14 +61,14 @@ public class ScalabeDurationUserType implements UserType,ParameterizedType {
 	public void setParameterValues(Properties parameters) {
 		LOGGER.debug("setParameterValues {}",parameters);
 		ChronoUnit unit = ChronoUnit.valueOf(parameters.get("unit").toString());
-		descriptor.setUnit(unit);
+		//descriptor.setUnit(unit);
 	}
 
 	@Override
 	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
 			throws HibernateException, SQLException {
 		 String columnName = names[0];
-	        Long columnValue =rs.getLong( columnName );
+	        String columnValue =rs.getString( columnName );
 	        return columnValue == null ? null :descriptor.convert( columnValue );
 	}
 
@@ -84,8 +79,8 @@ public class ScalabeDurationUserType implements UserType,ParameterizedType {
 	            st.setNull( index, Types.BIGINT );
 	        }
 	        else {
-	            Long longVal = descriptor.convert( (Duration) value );
-	            st.setLong(index, longVal);
+	            String longVal = descriptor.convert( (List) value );
+	            st.setString(index, longVal);
 	        }
 		
 	}

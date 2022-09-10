@@ -53,47 +53,45 @@ public class BlobStreamType implements UserType  {
 
 	@Override
 	public Serializable disassemble(Object value) throws HibernateException {
+		LOGGER.info("disassemble");
 		return (Serializable) value;
 	}
 
 	@Override
 	public Object assemble(Serializable cached, Object owner) throws HibernateException {
+		LOGGER.info("assemble");
 		return cached;
 	}
 
 	@Override
 	public Object replace(Object original, Object target, Object owner) throws HibernateException {
+		LOGGER.info("replace");
 		return original;
 	}
 
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
-			throws HibernateException, SQLException {
+	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)throws HibernateException, SQLException {
+		Object result = null;
 		int columnIndex = rs.findColumn(names[0]);
 		LOGGER.debug("nullSafeGet: {}",new Object[]{columnIndex});
-		InputStream is = rs.getBinaryStream(columnIndex);
-		BlobStream bs = new BlobStream(is, -1);
-		return bs;
+		//NOTE using getBlob works with database OID types but does not work with bytearray types, need to create a new type for that
+		Blob b = rs.getBlob(columnIndex);
+		if(b!=null) result = new BlobStream(b.getBinaryStream());
+		return result;
 	}
 
 	@Override
-	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session)
-			throws HibernateException, SQLException {
+	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
+		LOGGER.debug("nullSafeSet: {}",new Object[]{index});
+		InputStream stream = null;
 		if (value != null) {
 			BlobStream blob = (BlobStream) value;
-			if (blob.getStream() != null) {
-				InputStream stream = blob.getStream();
-				Long length = blob.getLength();
-				LOGGER.debug("Setting stream: {} of length: {}",new Object[]{stream,length});
-				st.setBinaryStream(index, stream, length.intValue()); //TODO handle unknown lengths
-			}
-			else {
-				st.setBlob(index, (Blob) null);
-			}
+			LOGGER.debug("BlobStream: {}",blob);
+			stream = blob.getStream();
+			LOGGER.debug("stream: {}",stream);
 		} 
-		else {
-			st.setBlob(index, (Blob) null);
-		}
+		st.setBlob(index, stream);
+		LOGGER.debug("nullSafeSet done");
 		
 	}
 
