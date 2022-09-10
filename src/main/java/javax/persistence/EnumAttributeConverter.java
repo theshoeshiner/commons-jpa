@@ -6,11 +6,14 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 /**
- * Converter that maps enums to strings in a database. By default creates snake_case strings, but can be overriden to generate any string.
+ * Converter that maps enums to custom strings in a databas (as opposed to using their Java name)
+ * Convenient when your database model prefers a specific string format that doesnt fit with your java enum names 
+ * By default creates snake_case strings, but can override @javax.persistence.EnumAttributeConverter.convertEnum(T) to generate any string.
  * @author theshoeshiner
  *
  * @param <T>
  */
+@Deprecated
 public abstract class EnumAttributeConverter<T extends Enum<T>> implements AttributeConverter<T, String> {
 
 	protected BiMap<T,String> map;
