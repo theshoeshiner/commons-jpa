@@ -10,6 +10,7 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
 import org.hibernate.boot.model.naming.ImplicitUniqueKeyNameSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.thshsh.text.CaseUtils;
 
 @SuppressWarnings("serial")
 public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathImpl {
@@ -24,7 +25,13 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	@Override
 	public Identifier determineIndexName(ImplicitIndexNameSource source) {
 		if(source.getUserProvidedIdentifier()!=null) return source.getUserProvidedIdentifier();
-		String name = "ix_"+source.getTableName().getText()+"_"+String.join("_", source.getColumnNames().stream().map(Identifier::getText).collect(Collectors.toList()));
+		String name = "ix_"+source.getTableName().getText()+"_"+String.join("_", 
+				source
+				.getColumnNames()
+				.stream()
+				.map(Identifier::getText)
+				.map(CaseUtils::toSnakeCase)
+				.collect(Collectors.toList()));
 		LOGGER.debug("determineIndexName: {}",name);
 		return Identifier.toIdentifier(name);
 	}
@@ -32,7 +39,13 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	@Override
 	public Identifier determineUniqueKeyName(ImplicitUniqueKeyNameSource source) {
 		if(source.getUserProvidedIdentifier()!=null) return source.getUserProvidedIdentifier();
-		String name = "uk_"+source.getTableName().getText()+"_"+String.join("_", source.getColumnNames().stream().map(Identifier::getText).collect(Collectors.toList()));
+		String name = "uk_"+source.getTableName().getText()+"_"+String.join("_", 
+				source
+				.getColumnNames()
+				.stream()
+				.map(Identifier::getText)
+				.map(CaseUtils::toSnakeCase)
+				.collect(Collectors.toList()));
 		LOGGER.debug("determineUniqueKeyName: {}",name);
 		return Identifier.toIdentifier(name);  
 	}
@@ -42,7 +55,13 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	@Override
 	public Identifier determineForeignKeyName(ImplicitForeignKeyNameSource source) {
 		if(source.getUserProvidedIdentifier()!=null) return source.getUserProvidedIdentifier();
-		String columns = String.join("_", source.getColumnNames().stream().map(Identifier::getText).collect(Collectors.toList()));
+		String columns = String.join("_", 
+				source
+				.getColumnNames()
+				.stream()
+				.map(Identifier::getText)
+				.map(CaseUtils::toSnakeCase)
+				.collect(Collectors.toList()));
 		String name = "fk_"+source.getTableName().getText()+"_"+source.getReferencedTableName().getText()+"_"+columns;
 		LOGGER.debug("determineForeignKeyName: {}",name);
 		return Identifier.toIdentifier(name);   
@@ -50,8 +69,6 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 
 	@Override
 	public Identifier determineIdentifierColumnName(ImplicitIdentifierColumnNameSource source) {
-		//source.ge
-		//String name = "pk_"+source.get
 		Identifier i = super.determineIdentifierColumnName(source);
 		LOGGER.debug("determineIdentifierColumnName: {}",i);
 		return i;
