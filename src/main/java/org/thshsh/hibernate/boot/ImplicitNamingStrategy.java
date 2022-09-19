@@ -1,5 +1,6 @@
 package org.thshsh.hibernate.boot;
 
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.hibernate.boot.model.naming.Identifier;
@@ -18,8 +19,15 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger(ImplicitNamingStrategy.class);
 	
+	protected Function<? super String,? extends String> nameFunction;
+	
 	public ImplicitNamingStrategy() {
+		this(CaseUtils::toSnakeCase);
+	}
+	
+	public ImplicitNamingStrategy(Function<? super String,? extends String> f) {
 		super();
+		this.nameFunction = f;
 	}
 	
 	@Override
@@ -30,7 +38,7 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 				.getColumnNames()
 				.stream()
 				.map(Identifier::getText)
-				.map(CaseUtils::toSnakeCase)
+				.map(nameFunction)
 				.collect(Collectors.toList()));
 		LOGGER.debug("determineIndexName: {}",name);
 		return Identifier.toIdentifier(name);
@@ -44,7 +52,7 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 				.getColumnNames()
 				.stream()
 				.map(Identifier::getText)
-				.map(CaseUtils::toSnakeCase)
+				.map(nameFunction)
 				.collect(Collectors.toList()));
 		LOGGER.debug("determineUniqueKeyName: {}",name);
 		return Identifier.toIdentifier(name);  
@@ -60,7 +68,7 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 				.getColumnNames()
 				.stream()
 				.map(Identifier::getText)
-				.map(CaseUtils::toSnakeCase)
+				.map(nameFunction)
 				.collect(Collectors.toList()));
 		String name = "fk_"+source.getTableName().getText()+"_"+source.getReferencedTableName().getText()+"_"+columns;
 		LOGGER.debug("determineForeignKeyName: {}",name);
