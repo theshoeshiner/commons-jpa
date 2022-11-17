@@ -13,7 +13,6 @@ import com.google.common.collect.HashBiMap;
  *
  * @param <T>
  */
-@Deprecated
 public abstract class EnumAttributeConverter<T extends Enum<T>> implements AttributeConverter<T, String> {
 
 	protected BiMap<T,String> map;
