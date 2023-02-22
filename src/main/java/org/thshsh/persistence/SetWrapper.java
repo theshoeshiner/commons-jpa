@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
  * Which means it is only suitable for situations where the calling code can guarantee that no duplicates will be added to the collection
  * It can use any delegate collection, which means it can operate with the performance of a different implementation while maintaining
  * API compatibility
- * @author daniel.watson
  *
  * @param <T>
  */
