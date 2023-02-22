@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Snowflake has a similar dialect to SQL Server, but we need to override certain portions to match
- * @author daniel.watson
  *
  */
 public class SnowflakeDialect extends SQLServer2012Dialect {
