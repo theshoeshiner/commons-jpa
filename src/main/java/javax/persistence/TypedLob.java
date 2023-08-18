@@ -1,9 +1,5 @@
 package javax.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Lob;
-
 /**
  * Embedded type that wraps values commonly necessary for file storage.
  *

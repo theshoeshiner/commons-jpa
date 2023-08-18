@@ -11,7 +11,6 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
 import org.hibernate.boot.model.naming.ImplicitUniqueKeyNameSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thshsh.text.CaseUtils;
 
 @SuppressWarnings("serial")
 public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathImpl {
@@ -20,11 +19,7 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	public static final Logger LOGGER = LoggerFactory.getLogger(ImplicitNamingStrategy.class);
 	
 	protected Function<? super String,? extends String> nameFunction;
-	
-	public ImplicitNamingStrategy() {
-		this(CaseUtils::toSnakeCase);
-	}
-	
+
 	public ImplicitNamingStrategy(Function<? super String,? extends String> f) {
 		super();
 		this.nameFunction = f;

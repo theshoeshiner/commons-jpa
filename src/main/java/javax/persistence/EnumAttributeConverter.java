@@ -1,7 +1,5 @@
 package javax.persistence;
 
-import org.thshsh.text.CaseUtils;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -38,9 +36,7 @@ public abstract class EnumAttributeConverter<T extends Enum<T>> implements Attri
 	}
 	
 
-	public String convertEnum(T e) {
-		return CaseUtils.toSnakeCase(e.name());
-	}
+	public abstract String convertEnum(T e);
 	
 
 }
