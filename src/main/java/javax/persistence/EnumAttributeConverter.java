@@ -1,5 +1,10 @@
 package javax.persistence;
 
+import java.util.function.Function;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -13,13 +18,27 @@ import com.google.common.collect.HashBiMap;
  */
 public abstract class EnumAttributeConverter<T extends Enum<T>> implements AttributeConverter<T, String> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnumAttributeConverter.class);
+	
 	protected BiMap<T,String> map;
 	
 	public EnumAttributeConverter(Class<T> concrete) {
 		map = HashBiMap.create();
 		T[] values = concrete.getEnumConstants();
 		for(T t : values) {
-			map.put(t, convertEnum(t));
+			String s = convertEnum(t);
+			LOGGER.info("Enum value: {} database value: {}",t,s);
+			map.put(t, s);
+		}
+	}
+	
+	public EnumAttributeConverter(Class<T> concrete,Function<T,String> convertFunction) {
+		map = HashBiMap.create();
+		T[] values = concrete.getEnumConstants();
+		for(T t : values) {
+			String s = convertFunction.apply(t);
+			LOGGER.info("Enum value: {} database value: {}",t,s);
+			map.put(t, s);
 		}
 	}
 	
@@ -36,7 +55,9 @@ public abstract class EnumAttributeConverter<T extends Enum<T>> implements Attri
 	}
 	
 
-	public abstract String convertEnum(T e);
+	public String convertEnum(T e) {
+		return e.name();
+	}
 	
 
 }

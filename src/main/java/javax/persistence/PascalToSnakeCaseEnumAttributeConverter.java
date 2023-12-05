@@ -1,12 +1,20 @@
 package javax.persistence;
 
+import org.thshsh.text.cases.DelimitedCase;
 import org.thshsh.text.cases.PascalCase;
-import org.thshsh.text.cases.SnakeCase;
 
 public class PascalToSnakeCaseEnumAttributeConverter<T extends Enum<T>> extends CaseEnumAttributeConverter<T>{
 
 	public PascalToSnakeCaseEnumAttributeConverter(Class<T> concrete) {
-		super(concrete, PascalCase.INSTANCE, SnakeCase.INSTANCE	);
+		super(concrete, PascalCase.INSTANCE, new DelimitedCase('_') {
+
+			@Override
+			public String format(Iterable<String> tokens) {
+				String s = super.format(tokens);
+				return s.toLowerCase();
+			}
+			
+		});
 	}
 
 }
