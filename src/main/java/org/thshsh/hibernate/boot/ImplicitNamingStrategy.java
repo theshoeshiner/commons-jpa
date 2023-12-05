@@ -28,13 +28,13 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	@Override
 	public Identifier determineIndexName(ImplicitIndexNameSource source) {
 		if(source.getUserProvidedIdentifier()!=null) return source.getUserProvidedIdentifier();
-		String name = "ix_"+source.getTableName().getText()+"_"+String.join("_", 
+		String name = ("ix_"+source.getTableName().getText()+"_"+String.join("_", 
 				source
 				.getColumnNames()
 				.stream()
 				.map(Identifier::getText)
 				.map(nameFunction)
-				.collect(Collectors.toList()));
+				.collect(Collectors.toList()))).toLowerCase();
 		LOGGER.debug("determineIndexName: {}",name);
 		return Identifier.toIdentifier(name);
 	}
@@ -42,13 +42,13 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 	@Override
 	public Identifier determineUniqueKeyName(ImplicitUniqueKeyNameSource source) {
 		if(source.getUserProvidedIdentifier()!=null) return source.getUserProvidedIdentifier();
-		String name = "uk_"+source.getTableName().getText()+"_"+String.join("_", 
+		String name = ("uk_"+source.getTableName().getText()+"_"+String.join("_", 
 				source
 				.getColumnNames()
 				.stream()
 				.map(Identifier::getText)
 				.map(nameFunction)
-				.collect(Collectors.toList()));
+				.collect(Collectors.toList()))).toLowerCase();
 		LOGGER.debug("determineUniqueKeyName: {}",name);
 		return Identifier.toIdentifier(name);  
 	}
@@ -65,7 +65,7 @@ public class ImplicitNamingStrategy extends ImplicitNamingStrategyComponentPathI
 				.map(Identifier::getText)
 				.map(nameFunction)
 				.collect(Collectors.toList()));
-		String name = "fk_"+source.getTableName().getText()+"_"+source.getReferencedTableName().getText()+"_"+columns;
+		String name = ("fk_"+source.getTableName().getText()+"_"+source.getReferencedTableName().getText()+"_"+columns).toLowerCase();
 		LOGGER.debug("determineForeignKeyName: {}",name);
 		return Identifier.toIdentifier(name);   
 	}
