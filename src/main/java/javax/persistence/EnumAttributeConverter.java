@@ -9,7 +9,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 /**
- * Converter that maps enums to custom strings in a databas (as opposed to using their Java name)
+ * Converter that maps enums to custom strings in a database (as opposed to using their Java name)
  * Convenient when your database model prefers a specific string format that doesnt fit with your java enum names 
  * By default creates snake_case strings, but can override @javax.persistence.EnumAttributeConverter.convertEnum(T) to generate any string.
  * @author theshoeshiner
@@ -27,7 +27,7 @@ public abstract class EnumAttributeConverter<T extends Enum<T>> implements Attri
 		T[] values = concrete.getEnumConstants();
 		for(T t : values) {
 			String s = convertEnum(t);
-			LOGGER.info("Enum value: {} database value: {}",t,s);
+			LOGGER.debug("enum value: {} database value: {}",t,s);
 			map.put(t, s);
 		}
 	}
@@ -37,7 +37,7 @@ public abstract class EnumAttributeConverter<T extends Enum<T>> implements Attri
 		T[] values = concrete.getEnumConstants();
 		for(T t : values) {
 			String s = convertFunction.apply(t);
-			LOGGER.info("Enum value: {} database value: {}",t,s);
+			LOGGER.debug("enum value: {} database value: {}",t,s);
 			map.put(t, s);
 		}
 	}
