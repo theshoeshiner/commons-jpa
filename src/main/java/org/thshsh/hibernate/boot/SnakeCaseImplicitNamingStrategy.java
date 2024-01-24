@@ -9,9 +9,7 @@ import org.thshsh.text.cases.SnakeCase;
 @SuppressWarnings("serial")
 public class SnakeCaseImplicitNamingStrategy extends ImplicitNamingStrategy {
 	
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SnakeCaseImplicitNamingStrategy.class);
-
 
 	public SnakeCaseImplicitNamingStrategy() {
 		super(s -> {
